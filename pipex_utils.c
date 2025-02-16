@@ -88,34 +88,36 @@ int access_check(char *path, t_pipe *pi, int num) {
     return (0);
 }
 
-void	set_full_path(t_pipe *pi, int num)
+void set_full_path(t_pipe *pi, int num)
 {
-	char	**path;
-	int		i;
-	int		check;
+    char    **path;
+    int     i;
+    int     check;
 
-	check = 0;
-	path = set_path(pi);
-	if (!path)
-		ft_error("Error: PATH environment variable not found\n", NULL);
-	i = 0;
-	while (path[i] && check == 0)
+    check = 0;
+    path = set_path(pi);
+    if (!path)
 	{
-		if (num == 1)
-			check = access_check(path[i], pi, num);
-		else if (num == 2)
-			check = access_check(path[i], pi, num);
-		i++;
+		cleanup_pipex(pi);
+        ft_error("Error: PATH environment variable not found\n", NULL);
 	}
-	free_split(path);
-	if (!check && num == 1)
-	{
-		free(pi->cmd1);
-		return (ft_error("Command not found", pi->cmd1_flags[0]));
-	}
-	else if (!check && num == 2)
-	{
-		free(pi->cmd2);
-		ft_error("Command not found", pi->cmd2_flags[0]);
-	}
+    i = 0;
+    while (path[i] && check == 0)
+    {
+        if (num == 1)
+            check = access_check(path[i], pi, num);
+        else if (num == 2)
+            check = access_check(path[i], pi, num);
+        i++;
+    }
+    free_split(path);
+    if (!check)
+    {
+        cleanup_pipex(pi);
+        if (num == 1)
+            ft_error("Command not found", pi->cmd1_flags[0]);
+        else
+            ft_error("Command not found", pi->cmd2_flags[0]);
+    }
 }
+

@@ -12,6 +12,18 @@
 
 #include "pipex.h"
 
+void    cleanup_pipex(t_pipe *pi)
+{
+    if (pi->cmd1 && pi->cmd1 != pi->cmd1_flags[0])
+        free(pi->cmd1);
+    if (pi->cmd2 && pi->cmd2 != pi->cmd2_flags[0])
+        free(pi->cmd2);
+    if (pi->cmd1_flags)
+        free_split(pi->cmd1_flags);
+    if (pi->cmd2_flags)
+        free_split(pi->cmd2_flags);
+}
+
 char	*ft_strdup(char *str)
 {
 	char	*new;

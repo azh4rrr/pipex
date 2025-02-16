@@ -12,14 +12,9 @@
 
 #include "pipex.h"
 
-void	ft_error(char *str, char *c)
+void	ft_error(char *str)
 {
 	write(2, str, ft_strlen(str));
-	if (c)
-	{
-		write(2, ": ", 2);
-		write(2, c, ft_strlen(c));
-	}
 	write(2, "\n", 1);
 	exit(1);
 }
@@ -42,8 +37,7 @@ void	execute(t_pipe *pi, int num)
 		close(pi->fd[1]);
 		close(pi->fd_out);
 		execve(pi->cmd1, pi->cmd1_flags, pi->env);
-		if (pi->cmd1 != pi->cmd1_flags[0])
-			free(pi->cmd1);
+		cleanup_pipex(pi);
 		exit(1);
 	}
 	else if (num == 2)
@@ -55,8 +49,7 @@ void	execute(t_pipe *pi, int num)
 		close(pi->fd_out);
 		close(pi->fd_in);
 		execve(pi->cmd2, pi->cmd2_flags, pi->env);
-		if (pi->cmd2 != pi->cmd2_flags[0])
-			free(pi->cmd2);
+		cleanup_pipex(pi);
 		exit(1);
 	}
 }
@@ -98,21 +91,28 @@ int	main(int ac, char **av, char **env)
 	{
 		pi.cmd1 = NULL;
 		pi.cmd2 = NULL;
+		pi.error = 0;
 		pi.cmd1_flags = ft_split(av[2], ' ');
 		pi.cmd2_flags = ft_split(av[3], ' ');
 		pi.env = env;
 		pi.fd_in = open(av[1], O_RDONLY);
 		pi.fd_out = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (pi.fd_in < 0)
+		{
+			cleanup_pipex(&pi);
 			ft_error("No such file or directory", av[1]);
+		}
 		if (pi.fd_out < 0)
 		{
 			close(pi.fd_in);
+			cleanup_pipex(&pi);
 			ft_error("Error creating file", av[4]);
 		}
 		ft_pipex(&pi);
         free_split(pi.cmd1_flags);
         free_split(pi.cmd2_flags);
+		if (pi.error == 0)
+			exit(1);
 	}
 	else
 		ft_error("Error: Wrong number of arguments", NULL);

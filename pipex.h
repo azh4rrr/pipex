@@ -32,9 +32,11 @@ typedef struct s_pipex
 	char	**cmd2_flags;
 	int		fd_in;
 	int		fd_out;
+	int		error;
 }			t_pipe;
 
 void		ft_error(char *str, char *c);
+void		cleanup_pipex(t_pipe *pi);
 void		ft_close(t_pipe *pi);
 void		free_split(char **split);
 char		**ft_split(const char *s, char c);
