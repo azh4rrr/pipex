@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:29:24 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 23:47:54 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:51:36 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ int	main(int ac, char **av, char **env)
 			ft_error("Error creating file");
 		}
 		ft_pipex(&pi);
-        free_split(pi.cmd1_flags);
-        free_split(pi.cmd2_flags);
+		free_split(pi.cmd1_flags);
+		free_split(pi.cmd2_flags);
 		if (pi.error == 0)
 			exit(1);
 	}
