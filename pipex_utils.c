@@ -59,32 +59,33 @@ char	**set_path(t_pipe *pi)
 	return (NULL);
 }
 
-int	access_check(char *path, t_pipe *pi, int num)
-{
-	char	*tmp;
+int access_check(char *path, t_pipe *pi, int num) {
+    char *tmp ;
+    char *tmp2 = NULL;
 
+	tmp2 = NULL;
 	tmp = ft_strjoin(path, "/");
-	if (num == 1)
+    if (!tmp) 
+		return (0);
+    if (num == 1) 
+		tmp2 = ft_strjoin(tmp, pi->cmd1_flags[0]);
+    else if (num == 2) 
+		tmp2 = ft_strjoin(tmp, pi->cmd2_flags[0]);
+    free(tmp); // Free "path/" after creating tmp2
+    if (!tmp2) 
+		return (0);
+    tmp = tmp2;
+    if (access(tmp, F_OK | X_OK) == 0) 
 	{
-		tmp = ft_strjoin(tmp, pi->cmd1_flags[0]);
-		if (access(tmp, F_OK | X_OK) == 0)
-		{
+        if (num == 1) 
 			pi->cmd1 = ft_strdup(tmp);
-			return (1);
-		}
-	}
-	else if (num == 2)
-	{
-		tmp = ft_strjoin(tmp, pi->cmd2_flags[0]);
-		if (access(tmp, F_OK | X_OK) == 0)
-		{
+        else if (num == 2) 
 			pi->cmd2 = ft_strdup(tmp);
-			return (1);
-		}
-	}
-	if (tmp)
-		free(tmp);
-	return (0);
+        free(tmp); // Free the joined path after duplication
+        return (1);
+    }
+    free(tmp2); // Free if access fails
+    return (0);
 }
 
 void	set_full_path(t_pipe *pi, int num)
@@ -108,7 +109,13 @@ void	set_full_path(t_pipe *pi, int num)
 	}
 	free_split(path);
 	if (!check && num == 1)
+	{
+		free(pi->cmd1);
 		return (ft_error("Command not found", pi->cmd1_flags[0]));
+	}
 	else if (!check && num == 2)
+	{
+		free(pi->cmd2);
 		ft_error("Command not found", pi->cmd2_flags[0]);
+	}
 }

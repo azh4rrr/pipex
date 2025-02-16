@@ -42,6 +42,8 @@ void	execute(t_pipe *pi, int num)
 		close(pi->fd[1]);
 		close(pi->fd_out);
 		execve(pi->cmd1, pi->cmd1_flags, pi->env);
+		if (pi->cmd1 != pi->cmd1_flags[0])
+			free(pi->cmd1);
 		exit(1);
 	}
 	else if (num == 2)
@@ -53,6 +55,8 @@ void	execute(t_pipe *pi, int num)
 		close(pi->fd_out);
 		close(pi->fd_in);
 		execve(pi->cmd2, pi->cmd2_flags, pi->env);
+		if (pi->cmd2 != pi->cmd2_flags[0])
+			free(pi->cmd2);
 		exit(1);
 	}
 }
@@ -92,8 +96,8 @@ int	main(int ac, char **av, char **env)
 
 	if (ac == 5)
 	{
-		pi.cmd1 = av[2];
-		pi.cmd2 = av[3];
+		pi.cmd1 = NULL;
+		pi.cmd2 = NULL;
 		pi.cmd1_flags = ft_split(av[2], ' ');
 		pi.cmd2_flags = ft_split(av[3], ' ');
 		pi.env = env;
