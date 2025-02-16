@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:29:24 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 22:06:43 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:47:54 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,10 @@ void	ft_pipex(t_pipe *pi)
 	pid_t	pid2;
 
 	if (pipe(pi->fd) < 0)
-		ft_error("Pipe faild", NULL);
+		ft_error("Pipe faild");
 	pid = fork();
 	if (pid < 0)
-		return (close(pi->fd[0]), close(pi->fd[1]), ft_error("Fork faild",
-				NULL));
+		return (close(pi->fd[0]), close(pi->fd[1]), ft_error("Fork faild"));
 	if (pid == 0)
 	{
 		set_full_path(pi, 1);
@@ -72,7 +71,7 @@ void	ft_pipex(t_pipe *pi)
 	}
 	pid2 = fork();
 	if (pid2 < 0)
-		ft_error("Fork faild", NULL);
+		ft_error("Fork faild");
 	if (pid2 == 0)
 	{
 		set_full_path(pi, 2);
@@ -100,13 +99,13 @@ int	main(int ac, char **av, char **env)
 		if (pi.fd_in < 0)
 		{
 			cleanup_pipex(&pi);
-			ft_error("No such file or directory", av[1]);
+			ft_error("No such file or directory");
 		}
 		if (pi.fd_out < 0)
 		{
 			close(pi.fd_in);
 			cleanup_pipex(&pi);
-			ft_error("Error creating file", av[4]);
+			ft_error("Error creating file");
 		}
 		ft_pipex(&pi);
         free_split(pi.cmd1_flags);
@@ -115,5 +114,5 @@ int	main(int ac, char **av, char **env)
 			exit(1);
 	}
 	else
-		ft_error("Error: Wrong number of arguments", NULL);
+		ft_error("Error: Wrong number of arguments");
 }

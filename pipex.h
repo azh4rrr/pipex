@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:03:21 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 22:01:57 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:48:49 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_pipex
 	int		error;
 }			t_pipe;
 
-void		ft_error(char *str, char *c);
+void		ft_error(char *str);
 void		cleanup_pipex(t_pipe *pi);
 void		ft_close(t_pipe *pi);
 void		free_split(char **split);

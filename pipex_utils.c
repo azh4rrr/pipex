@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:46:31 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 22:07:28 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:49:12 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**set_path(t_pipe *pi)
 		{
 			path = ft_split((pi->env)[i] + 5, ':');
 			if (!path)
-				ft_error("error spliting", NULL);
+				ft_error("error spliting");
 			return (path);
 		}
 		i++;
@@ -99,7 +99,7 @@ void set_full_path(t_pipe *pi, int num)
     if (!path)
 	{
 		cleanup_pipex(pi);
-        ft_error("Error: PATH environment variable not found\n", NULL);
+        ft_error("Error: PATH environment variable not found\n");
 	}
     i = 0;
     while (path[i] && check == 0)
@@ -115,9 +115,9 @@ void set_full_path(t_pipe *pi, int num)
     {
         cleanup_pipex(pi);
         if (num == 1)
-            ft_error("Command not found", pi->cmd1_flags[0]);
+            ft_error("Command not found");
         else
-            ft_error("Command not found", pi->cmd2_flags[0]);
+            ft_error("Command not found");
     }
 }
 
