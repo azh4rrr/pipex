@@ -15,12 +15,18 @@
 
 void	free_split(char **split)
 {
-	while (*split)
-	{
-		free(*split);
-		split++;
-	}
-	free(split);
+
+    int i;
+
+    if (!split)
+        return;
+    i = 0;
+    while (split[i])
+    {
+        free(split[i]);
+        i++;
+    }
+    free(split);
 }
 
 int	ft_strlen(const char *s)
@@ -76,6 +82,8 @@ int	access_check(char *path, t_pipe *pi, int num)
 			return (1);
 		}
 	}
+	if (tmp)
+		free(tmp);
 	return (0);
 }
 
@@ -98,6 +106,7 @@ void	set_full_path(t_pipe *pi, int num)
 			check = access_check(path[i], pi, num);
 		i++;
 	}
+	free_split(path);
 	if (!check && num == 1)
 		return (ft_error("Command not found", pi->cmd1_flags[0]));
 	else if (!check && num == 2)

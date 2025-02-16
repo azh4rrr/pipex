@@ -107,6 +107,8 @@ int	main(int ac, char **av, char **env)
 			ft_error("Error creating file", av[4]);
 		}
 		ft_pipex(&pi);
+        free_split(pi.cmd1_flags);
+        free_split(pi.cmd2_flags);
 	}
 	else
 		ft_error("Error: Wrong number of arguments", NULL);
