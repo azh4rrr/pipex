@@ -79,8 +79,8 @@ int	access_check(char *path, t_pipe *pi, int num)
 		if (num == 1)
 			pi->cmd1 = ft_strdup(tmp);
 		else if (num == 2)
-			pi->cmd2 = ft_strdup(tmp); 
-		return (free(tmp) ,1);
+			pi->cmd2 = ft_strdup(tmp);
+		return (free(tmp), 1);
 	}
 	free(tmp2);
 	return (0);
@@ -95,11 +95,12 @@ void	set_full_path(t_pipe *pi, int num)
 	check = 0;
 	path = set_path(pi);
 	if (!path)
-		return (cleanup_pipex(pi), ft_error("Error: PATH environment variable not found\n"));
+		return (cleanup_pipex(pi),
+			ft_error("Error: PATH environment variable not found\n"));
 	i = 0;
 	while (path[i] && check == 0)
 	{
-		if (num == 1 ||  num == 2)
+		if (num == 1 || num == 2)
 			check = access_check(path[i], pi, num);
 		i++;
 	}

@@ -96,9 +96,11 @@ int	main(int ac, char **av, char **env)
 		pi.fd_in = open(av[1], O_RDONLY);
 		pi.fd_out = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (pi.fd_in < 0)
-			return (cleanup_pipex(&pi) ,ft_error("No such file or directory"), 1);
+			return (cleanup_pipex(&pi),
+				ft_error("No such file or directory"), 1);
 		if (pi.fd_out < 0)
-			return(close(pi.fd_in), cleanup_pipex(&pi), ft_error("Error creating file"), 1);
+			return (close(pi.fd_in), cleanup_pipex(&pi),
+				ft_error("Error creating file"), 1);
 		ft_pipex(&pi);
 		free_split(pi.cmd1_flags);
 		free_split(pi.cmd2_flags);
@@ -106,4 +108,3 @@ int	main(int ac, char **av, char **env)
 	else
 		ft_error("Error: Wrong number of arguments");
 }
-
