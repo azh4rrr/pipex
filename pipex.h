@@ -32,7 +32,6 @@ typedef struct s_pipex
 	char	**cmd2_flags;
 	int		fd_in;
 	int		fd_out;
-	int		error;
 }			t_pipe;
 
 void		ft_error(char *str);
