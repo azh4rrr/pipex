@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:03:21 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 23:48:49 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:45:05 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 # define PIPEX_H
 
 # include <fcntl.h>
-# include <stdio.h>
 # include <stdlib.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <time.h>
+// # include <sys/types.h>
+// # include <sys/wait.h>
+// # include <time.h>
 # include <unistd.h>
 
 typedef struct s_pipex

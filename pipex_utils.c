@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:46:31 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 23:51:46 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:54:04 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_split(char **split)
 {
 	int	i;
 
-	if (!split)
+	if (!split || !*split)
 		return ;
 	i = 0;
 	while (split[i])
@@ -63,6 +63,7 @@ int	access_check(char *path, t_pipe *pi, int num)
 	char	*tmp;
 	char	*tmp2;
 
+	tmp2 = NULL;
 	tmp = ft_strjoin(path, "/");
 	if (!tmp)
 		return (0);
@@ -105,7 +106,7 @@ void	set_full_path(t_pipe *pi, int num)
 		i++;
 	}
 	free_split(path);
-	if (!check)
+	if (!check || !pi->cmd1_flags[0] || !pi->cmd2_flags[0])
 	{
 		cleanup_pipex(pi);
 		if (num == 1)

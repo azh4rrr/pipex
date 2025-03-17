@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 19:56:22 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 22:07:43 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:53:47 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	**ft_split(const char *s, char c)
 {
 	size_t	count;
 	char	**p;
+	char	**t;
 
 	if (!s)
 		return (NULL);
@@ -94,5 +95,6 @@ char	**ft_split(const char *s, char c)
 	p = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!p)
 		return (NULL);
+	t = shoten2(p, s, c);
 	return (shoten2(p, s, c));
 }
