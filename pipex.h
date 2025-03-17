@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 18:03:21 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 12:45:05 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:42:57 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 # include <fcntl.h>
 # include <stdlib.h>
-// # include <sys/types.h>
-// # include <sys/wait.h>
-// # include <time.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 typedef struct s_pipex
@@ -34,6 +32,8 @@ typedef struct s_pipex
 }			t_pipe;
 
 void		ft_error(char *str);
+void		single_quote(const char *s, size_t *i, size_t *start);
+int			ft_strchr(char c, char s);
 void		cleanup_pipex(t_pipe *pi);
 void		ft_close(t_pipe *pi);
 void		free_split(char **split);

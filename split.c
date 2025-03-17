@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 19:56:22 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 12:55:49 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:43:56 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,19 @@ static size_t	counts(const char *s, char c)
 	while (s[i])
 	{
 		if (s[i] != c && (i == 0 || s[i - 1] == c))
+		{
+			if (s[i++] == '\'')
+			{
+				while (s[i] && s[i] != '\'')
+					i++;
+			}
+			else if (s[i++] == '\"')
+			{
+				while (s[i] && s[i] != '\"')
+					i++;
+			}
 			count++;
+		}
 		i++;
 	}
 	return (count);
@@ -73,7 +85,8 @@ static char	**shoten2(char **p, const char *s, char c)
 		while (s[i] == c)
 			i++;
 		start = i;
-		while (s[i] && s[i] != c)
+		single_quote(s, &i, &start);
+		while (s[i] && ft_strchr(c, s[i]) == 0 && s[i] != '\'' && s[i] != '\"')
 			i++;
 		p[x++] = ft_substr(s, start, i - start);
 		if (!p[x - 1])
@@ -87,7 +100,6 @@ char	**ft_split(const char *s, char c)
 {
 	size_t	count;
 	char	**p;
-	char	**t;
 
 	if (!s)
 		return (NULL);
