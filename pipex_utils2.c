@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 15:15:36 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/02/16 23:51:42 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:50:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 void	cleanup_pipex(t_pipe *pi)
 {
-	if (pi->cmd1 && pi->cmd1 != pi->cmd1_flags[0])
-		free(pi->cmd1);
-	if (pi->cmd2 && pi->cmd2 != pi->cmd2_flags[0])
-		free(pi->cmd2);
-	if (pi->cmd1_flags)
-		free_split(pi->cmd1_flags);
-	if (pi->cmd2_flags)
-		free_split(pi->cmd2_flags);
+	free(pi->cmd1);
+	free(pi->cmd2);
+	free_split(pi->cmd1_flags);
+	free_split(pi->cmd2_flags);
 }
 
 char	*ft_strdup(char *str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:46:31 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 12:54:04 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:56:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_split(char **split)
 {
 	int	i;
 
-	if (!split || !*split)
+	if (!split)
 		return ;
 	i = 0;
 	while (split[i])
@@ -109,9 +109,6 @@ void	set_full_path(t_pipe *pi, int num)
 	if (!check || !pi->cmd1_flags[0] || !pi->cmd2_flags[0])
 	{
 		cleanup_pipex(pi);
-		if (num == 1)
-			ft_error("Command not found");
-		else
-			ft_error("Command not found");
+		ft_error("Command not found");
 	}
 }
