@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:29:24 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/04/24 19:10:39 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:24:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,35 +83,44 @@ void	execute(t_pipe *pi, int num)
 		execute_second_cmd(pi);
 }
 
-void	ft_pipex(t_pipe *pi)
+void create_processes(t_pipe *pi, pid_t *pid1, pid_t *pid2)
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		status;
+    if (pipe(pi->fd) < 0)
+        ft_error("Pipe failed");
+    
+    *pid1 = fork();
+    if (*pid1 < 0)
+        return (ft_close(pi), ft_error("Fork failed"));
+    if (*pid1 == 0)
+    {
+        if (access(pi->av[1], F_OK | R_OK) == 0)
+            set_full_path(pi, 1);
+        execute(pi, 1);
+    }
+    
+    *pid2 = fork();
+    if (*pid2 < 0)
+        ft_error("Fork failed");
+    if (*pid2 == 0)
+    {
+        set_full_path(pi, 2);
+        execute(pi, 2);
+    }
+}
 
-	if (pipe(pi->fd) < 0)
-		ft_error("Pipe failed");
-	pid1 = fork();
-	if (pid1 < 0)
-		return (ft_close(pi), ft_error("Fork failed"));
-	if (pid1 == 0)
-	{
-		if (access(pi->av[1], F_OK | R_OK) == 0)
-			set_full_path(pi, 1);
-		execute(pi, 1);
-	}
-	pid2 = fork();
-	if (pid2 < 0)
-		ft_error("Fork failed");
-	if (pid2 == 0)
-	{
-		set_full_path(pi, 2);
-		execute(pi, 2);
-	}
-	ft_close(pi);
-	waitpid(pid1, &status, 0);
-	waitpid(pid2, &status, 0);
-	exit(WEXITSTATUS(status));
+void ft_pipex(t_pipe *pi)
+{
+    pid_t pid1;
+    pid_t pid2;
+    int status;
+
+    create_processes(pi, &pid1, &pid2);
+    
+    ft_close(pi);
+    waitpid(pid1, &status, 0);
+    waitpid(pid2, &status, 0);
+    cleanup_pipex(pi);
+    exit(WEXITSTATUS(status));
 }
 
 void	init_pipex(t_pipe *pi, char **av, char **env)
@@ -132,7 +141,7 @@ int	main(int ac, char **av, char **env)
 	{
 		init_pipex(&pi, av, env);
 		ft_pipex(&pi);
-		cleanup_pipex(&pi);
+		// cleanup_pipex(&pi);
 	}
 	else
 		ft_error("Error: Wrong number of arguments");
