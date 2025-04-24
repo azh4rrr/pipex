@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:46:31 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 16:56:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/04/24 19:04:17 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <stdio.h>
 
 void	free_split(char **split)
 {
@@ -50,7 +49,7 @@ char	**set_path(t_pipe *pi)
 		{
 			path = ft_split((pi->env)[i] + 5, ':');
 			if (!path)
-				ft_error("error spliting");
+				ft_error("error splitting");
 			return (path);
 		}
 		i++;
@@ -63,8 +62,8 @@ int	access_check(char *path, t_pipe *pi, int num)
 	char	*tmp;
 	char	*tmp2;
 
-	tmp2 = NULL;
 	tmp = ft_strjoin(path, "/");
+	tmp2 = NULL;
 	if (!tmp)
 		return (0);
 	if (num == 1)
@@ -74,16 +73,37 @@ int	access_check(char *path, t_pipe *pi, int num)
 	free(tmp);
 	if (!tmp2)
 		return (0);
-	tmp = tmp2;
-	if (access(tmp, F_OK | X_OK) == 0)
+	if (access(tmp2, F_OK | X_OK) == 0)
 	{
 		if (num == 1)
-			pi->cmd1 = ft_strdup(tmp);
+			pi->cmd1 = ft_strdup(tmp2);
 		else if (num == 2)
-			pi->cmd2 = ft_strdup(tmp);
-		return (free(tmp), 1);
+			pi->cmd2 = ft_strdup(tmp2);
+		free(tmp2);
+		return (1);
 	}
 	free(tmp2);
+	return (0);
+}
+
+static int	check_absolute_path(t_pipe *pi, int num)
+{
+	char	*cmd;
+
+	cmd = (num == 1) ? pi->cmd1_flags[0] : pi->cmd2_flags[0];
+	if (!cmd)
+		return (0);
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	{
+		if (access(cmd, F_OK | X_OK) == 0)
+		{
+			if (num == 1)
+				pi->cmd1 = ft_strdup(cmd);
+			else if (num == 2)
+				pi->cmd2 = ft_strdup(cmd);
+			return (1);
+		}
+	}
 	return (0);
 }
 
@@ -93,22 +113,25 @@ void	set_full_path(t_pipe *pi, int num)
 	int		i;
 	int		check;
 
-	check = 0;
+	check = check_absolute_path(pi, num);
+	if (check)
+		return ;
 	path = set_path(pi);
 	if (!path)
 		return (cleanup_pipex(pi),
-			ft_error("Error: PATH environment variable not found\n"));
-	i = 0;
-	while (path[i] && check == 0)
-	{
+			ft_error("Error: PATH environment variable not found"));
+	i = -1;
+	while (path[++i] && check == 0)
 		if (num == 1 || num == 2)
 			check = access_check(path[i], pi, num);
-		i++;
-	}
 	free_split(path);
 	if (!check || !pi->cmd1_flags[0] || !pi->cmd2_flags[0])
 	{
+		if (num == 1)
+			print_error(pi->cmd1_flags[0]);
+		else if (num == 2)
+			print_error(pi->cmd2_flags[0]);
 		cleanup_pipex(pi);
-		ft_error("Command not found");
+		exit(1);
 	}
 }

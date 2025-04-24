@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 15:15:36 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 16:50:46 by codespace        ###   ########.fr       */
+/*   Updated: 2025/04/24 18:35:49 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	cleanup_pipex(t_pipe *pi)
 {
-	free(pi->cmd1);
-	free(pi->cmd2);
+	if (pi->cmd1)
+		free(pi->cmd1);
+	if (pi->cmd2)
+		free(pi->cmd2);
 	free_split(pi->cmd1_flags);
 	free_split(pi->cmd2_flags);
 }
@@ -25,10 +27,12 @@ char	*ft_strdup(char *str)
 	char	*new;
 	int		i;
 
-	i = 0;
+	if (!str)
+		return (NULL);
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!new)
 		return (NULL);
+	i = 0;
 	while (str[i])
 	{
 		new[i] = str[i];
@@ -81,6 +85,4 @@ void	ft_close(t_pipe *pi)
 {
 	close(pi->fd[0]);
 	close(pi->fd[1]);
-	close(pi->fd_in);
-	close(pi->fd_out);
 }

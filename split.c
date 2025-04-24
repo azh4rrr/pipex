@@ -6,7 +6,7 @@
 /*   By: azmakhlo <azmakhlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 19:56:22 by azmakhlo          #+#    #+#             */
-/*   Updated: 2025/03/17 16:43:56 by azmakhlo         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:36:18 by azmakhlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (p);
 }
 
+static void	handle_quotes(const char *s, size_t *i)
+{
+	if (s[*i] == '\'')
+	{
+		(*i)++;
+		while (s[*i] && s[*i] != '\'')
+			(*i)++;
+	}
+	else if (s[*i] == '\"')
+	{
+		(*i)++;
+		while (s[*i] && s[*i] != '\"')
+			(*i)++;
+	}
+}
+
 static size_t	counts(const char *s, char c)
 {
 	size_t	i;
@@ -47,16 +63,8 @@ static size_t	counts(const char *s, char c)
 	{
 		if (s[i] != c && (i == 0 || s[i - 1] == c))
 		{
-			if (s[i++] == '\'')
-			{
-				while (s[i] && s[i] != '\'')
-					i++;
-			}
-			else if (s[i++] == '\"')
-			{
-				while (s[i] && s[i] != '\"')
-					i++;
-			}
+			if (s[i] == '\'' || s[i] == '\"')
+				handle_quotes(s, &i);
 			count++;
 		}
 		i++;
